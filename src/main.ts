@@ -1,25 +1,16 @@
-import { Assets, Application, Sprite } from 'pixi.js';
+import { Application, Sprite } from 'pixi.js';
+import { nums } from './constants';
 
-const app = new Application();
-document.body.appendChild(app.view);
+const main = () => {
+  // init pixi app
+  const app = new Application();
+  document.body.appendChild(app.view);
 
-const texture = await Assets.load('assets/cat.jpg');
+  // make sprite and add to stage
+  const cat = new Sprite(nums[2]);
+  cat.x = app.renderer.width / 2;
+  cat.y = app.renderer.height / 2;
+  app.stage.addChild(cat);
+};
 
-const cat = new Sprite(texture);
-
-// Setup the position of the bunny
-cat.x = app.renderer.width / 2;
-cat.y = app.renderer.height / 2;
-
-// Rotate around the center
-cat.anchor.x = 0.5;
-cat.anchor.y = 0.5;
-
-// Add the cat to the scene we are building
-app.stage.addChild(cat);
-
-// Listen for frame updates
-app.ticker.add(() => {
-  // each frame we spin the cat around a bit
-  cat.rotation += 0.01;
-});
+main();
