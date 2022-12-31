@@ -2,17 +2,26 @@ import { Application, ICanvas, Sprite } from 'pixi.js';
 import { nums, GameState } from './constants';
 import { Box } from './Box';
 
-const generateSprites = (board: number[][], app: Application<ICanvas>) => {
-  for (let y = 0; y < board.length; y++) {
-    const line = board[y];
-    for (let x = 0; x < line.length; x++) {
-      const num = line[x];
+type Fruit = {
+  sprite: Sprite;
+  x: number;
+  y: number;
+};
+
+const generateSprites = (
+  board: number[][],
+  app: Application<ICanvas>
+): Fruit[][] => {
+  const result = board.map((line, y) => {
+    return line.map((num, x) => {
       const sprite = new Sprite(nums[num - 1]);
       sprite.x = x * 38 + 64;
       sprite.y = y * 38 + 64;
       app.stage.addChild(sprite);
-    }
-  }
+      return { sprite, x, y };
+    });
+  });
+  return result;
 };
 
 const main = () => {

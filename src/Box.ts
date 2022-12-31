@@ -3,7 +3,7 @@ const BOARD = {
   Y: 17,
 };
 
-export type point = {
+export type Coordinate = {
   x: number;
   y: number;
 };
@@ -18,7 +18,7 @@ export class Box {
     console.log(this.board);
   }
 
-  generateBoard() {
+  private generateBoard() {
     const newBoard = Array(BOARD.X)
       .fill(0)
       .map(() =>
@@ -66,7 +66,7 @@ export class Box {
   }
 
   // 長方形の対角になる点を受け取り、長方形内のブロックの消去を試みる。
-  tryEraseRectangles(points: point[]): boolean {
+  tryEraseRectangles(points: Coordinate[]): boolean {
     // 対角の2点を受け取る
     if (!(points[0] && points[1])) {
       return false;
