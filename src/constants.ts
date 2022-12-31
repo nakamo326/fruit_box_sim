@@ -4,8 +4,9 @@ export const WIDTH = 800;
 export const HEIGHT = 600;
 
 export const BOARD_STEP = 38;
-export const BOARD_START_X = 64;
-export const BOARD_START_Y = 64;
+// TODO: 画面の座標系xy逆になってるので修正すること
+export const BOARD_START_X = 77;
+export const BOARD_START_Y = 60;
 
 export type GameState = 'title' | 'game' | 'result';
 
