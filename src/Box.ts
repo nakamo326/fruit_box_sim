@@ -3,14 +3,19 @@ const BOARD = {
   Y: 17,
 };
 
+export type point = {
+  x: number;
+  y: number;
+};
+
 export class Box {
-  private Board: number[][];
-  private score: number;
+  board: number[][];
+  score: number;
 
   constructor() {
-    this.Board = this.generateBoard();
+    this.board = this.generateBoard();
     this.score = 0;
-    console.log(this.Board);
+    console.log(this.board);
   }
 
   generateBoard() {
@@ -42,21 +47,56 @@ export class Box {
     let numOfBlock = 0;
     for (let x = minX; x <= maxX; x++) {
       for (let y = minY; y <= maxY; y++) {
-        if (this.Board[x][y] !== 0) numOfBlock++;
+        if (this.board[x][y] !== 0) numOfBlock++;
       }
     }
     if (numOfBlock !== coordinates.length) return false;
     // 集合の合計がちょうど10点になるか確認する
     let count = 0;
     coordinates.forEach((val) => {
-      count += this.Board[val[0]][val[1]];
+      count += this.board[val[0]][val[1]];
     });
     if (count !== 10) return false;
     // Boardからcoordinatesの座標を消す
     coordinates.forEach((val) => {
-      this.Board[val[0]][val[1]] = 0;
+      this.board[val[0]][val[1]] = 0;
     });
     this.score += coordinates.length;
+    return true;
+  }
+
+  // 長方形の対角になる点を受け取り、長方形内のブロックの消去を試みる。
+  tryEraseRectangles(points: point[]): boolean {
+    // 対角の2点を受け取る
+    if (!(points[0] && points[1])) {
+      return false;
+    }
+    // 座標が作る長方形の範囲を決定
+    const minX = points[0].x < points[1].x ? points[0].x : points[1].x;
+    const maxX = points[0].x > points[1].x ? points[0].x : points[1].x;
+    const minY = points[0].y < points[1].y ? points[0].y : points[1].y;
+    const maxY = points[0].y > points[1].y ? points[0].y : points[1].y;
+
+    let numOfBlock = 0;
+    let count = 0;
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        if (this.board[x][y] !== 0) {
+          numOfBlock++;
+          count += this.board[x][y];
+        }
+      }
+    }
+    if (count !== 10) return false;
+    // Boardから長方形内のnumを0にする
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        if (this.board[x][y] !== 0) {
+          this.board[x][y] = 0;
+        }
+      }
+    }
+    this.score += numOfBlock;
     return true;
   }
 }
