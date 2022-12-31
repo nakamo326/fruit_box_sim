@@ -1,11 +1,18 @@
-import { Application, ICanvas, Sprite } from 'pixi.js';
+import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
 import { nums, GameState } from './constants';
-import { Box } from './Box';
+import { Box, Coordinate } from './Box';
 
 type Fruit = {
   sprite: Sprite;
   x: number;
   y: number;
+};
+
+let firstPoint: Coordinate | null = null;
+let secondPoint: Coordinate | null = null;
+
+const handleClick = (event: FederatedPointerEvent) => {
+  console.log(event.clientX, event.clientY);
 };
 
 const generateSprites = (
@@ -18,6 +25,8 @@ const generateSprites = (
       sprite.x = x * 38 + 64;
       sprite.y = y * 38 + 64;
       app.stage.addChild(sprite);
+      sprite.interactive = true;
+      sprite.on('pointerdown', handleClick);
       return { sprite, x, y };
     });
   });
