@@ -2,15 +2,11 @@ import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
 import { nums, GameState } from './constants';
 import { Box, Coordinate } from './Box';
 
-type Fruit = {
-  sprite: Sprite;
-  x: number;
-  y: number;
-};
+const box = new Box();
+let lastClicked: Coordinate | null = null;
 
-let firstPoint: Coordinate | null = null;
-let secondPoint: Coordinate | null = null;
-
+// 1回目、lastClickedに配列座標追加、長方形描画
+// 2回目、lastClickedと新しい座標を加えてBoxにtry。
 const handleClick = (event: FederatedPointerEvent) => {
   console.log(event.clientX, event.clientY);
 };
@@ -18,7 +14,7 @@ const handleClick = (event: FederatedPointerEvent) => {
 const generateSprites = (
   board: number[][],
   app: Application<ICanvas>
-): Fruit[][] => {
+): Sprite[][] => {
   const result = board.map((line, y) => {
     return line.map((num, x) => {
       const sprite = new Sprite(nums[num - 1]);
@@ -27,7 +23,7 @@ const generateSprites = (
       app.stage.addChild(sprite);
       sprite.interactive = true;
       sprite.on('pointerdown', handleClick);
-      return { sprite, x, y };
+      return sprite;
     });
   });
   return result;
@@ -38,8 +34,6 @@ const main = () => {
   const app = new Application();
   document.body.appendChild(app.view);
 
-  console.log(app.renderer.width);
-  const box = new Box();
   // 初期配置に対応するSpriteの配列を作成
   const Sprite = generateSprites(box.board, app);
 
