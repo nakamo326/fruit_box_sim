@@ -8,11 +8,6 @@ import {
 } from './constants';
 import { Box, Coordinate } from './Box';
 
-const box = new Box();
-let lastClicked: Coordinate | null = null;
-
-// 1回目、lastClickedに配列座標追加、長方形描画
-// 2回目、lastClickedと新しい座標を加えてBoxにtry。
 const handleClick = (event: FederatedPointerEvent) => {
   console.log(event.clientX, event.clientY);
   const x = Math.floor((event.clientX - BOARD_START_X) / BOARD_STEP);
@@ -20,9 +15,22 @@ const handleClick = (event: FederatedPointerEvent) => {
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     lastClicked = { x, y };
-    // set anchor to render draging rectangle
+    // set anchor to render dragging rectangle
     return;
   }
+  const res = box.tryEraseRectangles([lastClicked, { x, y }]);
+  console.log(res);
+  if (res) {
+    box.board.forEach((line, y) => {
+      line.forEach((num, x) => {
+        if (num === 0 && !Sprites[y][x].destroyed) {
+          Sprites[y][x].destroy();
+        }
+      });
+    });
+  }
+  // reset dragging rectangle.
+  lastClicked = null;
 };
 
 const generateSprites = (
@@ -36,6 +44,7 @@ const generateSprites = (
       sprite.y = y * BOARD_STEP + BOARD_START_Y;
       app.stage.addChild(sprite);
       sprite.interactive = true;
+      // TODO: spriteの隙間がクリックできないのでstageにリスナー貼る
       sprite.on('pointerdown', handleClick);
       return sprite;
     });
@@ -43,14 +52,16 @@ const generateSprites = (
   return result;
 };
 
+// init pixi app
+const app = new Application();
+document.body.appendChild(app.view);
+
+// 初期配置に対応するSpriteの配列を作成
+const box = new Box();
+const Sprites = generateSprites(box.board, app);
+let lastClicked: Coordinate | null = null;
+
 const main = () => {
-  // init pixi app
-  const app = new Application();
-  document.body.appendChild(app.view);
-
-  // 初期配置に対応するSpriteの配列を作成
-  const Sprite = generateSprites(box.board, app);
-
   // ゲームの流れ
   // トップページ (+ config)
   // ゲーム
@@ -63,4 +74,4 @@ const main = () => {
   });
 };
 
-main();
+// main();
