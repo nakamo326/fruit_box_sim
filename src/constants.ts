@@ -3,6 +3,8 @@ import { Assets } from 'pixi.js';
 export const WIDTH = 800;
 export const HEIGHT = 600;
 
+export type GameState = 'title' | 'game' | 'result';
+
 // load texture
 export const nums = await Promise.all(
   Array(9)
