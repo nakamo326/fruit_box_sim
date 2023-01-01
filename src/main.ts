@@ -1,4 +1,10 @@
-import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
+import {
+  Application,
+  FederatedPointerEvent,
+  Graphics,
+  ICanvas,
+  Sprite,
+} from 'pixi.js';
 import {
   Coordinate,
   nums,
@@ -63,13 +69,34 @@ const handleClick = (event: FederatedPointerEvent) => {
 };
 
 const handleOver = (event: FederatedPointerEvent) => {
-  const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
-  console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     return;
   }
+  const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
+  console.log(`(${x}, ${y})`);
+  if (lastHovered && x === lastHovered.x && y === lastHovered.y) {
+    return;
+  }
+  lastHovered = { x, y };
   const newContainer = updateBlockFrame(lastClicked, { x, y });
   app.stage.addChild(newContainer);
+};
+
+const generateBackground = (app: Application<ICanvas>) => {
+  const backGround = new Graphics();
+  backGround.beginFill(0x000000);
+  backGround.drawRect(
+    BOARD_START_X,
+    BOARD_START_Y,
+    BOARD_STEP * BOARD.X,
+    BOARD_STEP * BOARD.Y
+  );
+  backGround.endFill();
+  backGround.interactive = true;
+  backGround.on('pointerdown', handleClick);
+  backGround.on('pointerover', handleOver);
+  backGround.on('pointermove', handleOver);
+  app.stage.addChild(backGround);
 };
 
 const generateSprites = (
@@ -97,8 +124,10 @@ document.body.appendChild(app.view);
 
 // 初期配置に対応するSpriteの配列を作成
 const box = new Box();
+generateBackground(app);
 const Sprites = generateSprites(box.board, app);
 let lastClicked: Coordinate | null = null;
+let lastHovered: Coordinate | null = null;
 
 const main = () => {
   // ゲームの流れ
