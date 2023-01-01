@@ -1,6 +1,6 @@
 const BOARD = {
-  X: 10,
-  Y: 17,
+  X: 17,
+  Y: 10,
 };
 
 export type Coordinate = {
@@ -19,10 +19,10 @@ export class Box {
   }
 
   private generateBoard() {
-    const newBoard = Array(BOARD.X)
+    const newBoard = Array(BOARD.Y)
       .fill(0)
       .map(() =>
-        Array(BOARD.Y)
+        Array(BOARD.X)
           .fill(0)
           .map(() => Math.floor(Math.random() * 9) + 1)
       );
@@ -43,8 +43,8 @@ export class Box {
 
     let numOfBlock = 0;
     let count = 0;
-    for (let x = minX; x <= maxX; x++) {
-      for (let y = minY; y <= maxY; y++) {
+    for (let y = minY; y <= maxY; y++) {
+      for (let x = minX; x <= maxX; x++) {
         if (this.board[y][x] !== 0) {
           numOfBlock++;
           count += this.board[y][x];
@@ -53,8 +53,8 @@ export class Box {
     }
     if (count !== 10) return false;
     // Boardから長方形内のnumを0にする
-    for (let x = minX; x <= maxX; x++) {
-      for (let y = minY; y <= maxY; y++) {
+    for (let y = minY; y <= maxY; y++) {
+      for (let x = minX; x <= maxX; x++) {
         if (this.board[y][x] !== 0) {
           this.board[y][x] = 0;
         }
