@@ -1,4 +1,10 @@
-import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
+import {
+  Application,
+  Container,
+  FederatedPointerEvent,
+  ICanvas,
+  Sprite,
+} from 'pixi.js';
 import {
   Coordinate,
   nums,
@@ -7,6 +13,7 @@ import {
   BOARD_STEP,
   BOARD_START_X,
   BOARD_START_Y,
+  frame,
 } from './constants';
 import { Box } from './Box';
 
@@ -41,7 +48,6 @@ const handleClick = (event: FederatedPointerEvent) => {
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     lastClicked = { x, y };
-    // set anchor to render dragging rectangle
     return;
   }
   const res = box.tryEraseRectangles([lastClicked, { x, y }]);
@@ -55,8 +61,44 @@ const handleClick = (event: FederatedPointerEvent) => {
       });
     });
   }
-  // reset dragging rectangle.
   lastClicked = null;
+  frameContainer.destroy();
+};
+
+let frameContainer = new Container();
+
+const handleOver = (event: FederatedPointerEvent) => {
+  const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
+  console.log(`(${x}, ${y})`);
+  if (!lastClicked) {
+    return;
+  }
+  // TODO: 直前まで表示されていたframeを消す
+  if (!frameContainer.destroyed) {
+    frameContainer.destroy();
+  }
+  frameContainer = new Container();
+  app.stage.addChild(frameContainer);
+
+  // TODO: lastClickedと今の座標を囲むように線を出す
+  const minX = x < lastClicked.x ? x : lastClicked.x;
+  const maxX = x > lastClicked.x ? x : lastClicked.x;
+  const minY = y < lastClicked.y ? y : lastClicked.y;
+  const maxY = y > lastClicked.y ? y : lastClicked.y;
+
+  // left top frame
+  {
+    const leftSprite = new Sprite(frame);
+    leftSprite.x = minX * BOARD_STEP + BOARD_START_X - 4;
+    leftSprite.y = minY * BOARD_STEP + BOARD_START_Y - 4;
+    frameContainer.addChild(leftSprite);
+    const topSprite = new Sprite(frame);
+    topSprite.angle = 270;
+    topSprite.scale.set(-1, 1);
+    topSprite.x = minX * BOARD_STEP + BOARD_START_X - 4;
+    topSprite.y = minY * BOARD_STEP + BOARD_START_Y - 4;
+    frameContainer.addChild(topSprite);
+  }
 };
 
 const generateSprites = (
@@ -71,6 +113,7 @@ const generateSprites = (
       app.stage.addChild(sprite);
       sprite.interactive = true;
       sprite.on('pointerdown', handleClick);
+      sprite.on('pointerover', handleOver);
       return sprite;
     });
   });

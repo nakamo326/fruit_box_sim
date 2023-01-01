@@ -27,3 +27,5 @@ export const nums = await Promise.all(
       return await Assets.load(`assets/0${i + 1}.png`);
     })
 );
+
+export const frame = await Assets.load('assets/frame.png');
