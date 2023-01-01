@@ -9,10 +9,11 @@ import {
   BOARD_START_Y,
 } from './constants';
 import { Box } from './Box';
-import { updateBlockFrame, resetFrame } from './blockFrame';
+import { updateBlockFrame, resetBlockFrame } from './blockFrame';
 
 /*
-  選択したブロックと、hoverしているブロックを囲むように枠を表示する
+  [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
+  ブロックがないところの判定を追加する
   タイマーを設定する
   リザルト画面を出す
   タイトル画面を出す
@@ -42,6 +43,8 @@ const handleClick = (event: FederatedPointerEvent) => {
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     lastClicked = { x, y };
+    const newContainer = updateBlockFrame(lastClicked, { x, y });
+    app.stage.addChild(newContainer);
     return;
   }
   const res = box.tryEraseRectangles([lastClicked, { x, y }]);
@@ -56,7 +59,7 @@ const handleClick = (event: FederatedPointerEvent) => {
     });
   }
   lastClicked = null;
-  resetFrame();
+  resetBlockFrame();
 };
 
 const handleOver = (event: FederatedPointerEvent) => {

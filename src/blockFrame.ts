@@ -9,7 +9,7 @@ import {
 
 let frameContainer = new Container();
 
-export const resetFrame = () => {
+export const resetBlockFrame = () => {
   frameContainer.destroy();
 };
 
@@ -17,7 +17,6 @@ export const updateBlockFrame = (
   first: Coordinate,
   second: Coordinate
 ): Container => {
-  // TODO: 直前まで表示されていたframeを消す
   if (!frameContainer.destroyed) {
     frameContainer.destroy();
   }
@@ -52,6 +51,33 @@ export const updateBlockFrame = (
     const bottomSprite = new Sprite(frame);
     bottomSprite.angle = 270;
     bottomSprite.x = minX * BOARD_STEP + BOARD_START_X - 4;
+    bottomSprite.y = (maxY + 1) * BOARD_STEP + BOARD_START_Y - 4;
+    frameContainer.addChild(bottomSprite);
+  }
+  // right top frame
+  {
+    const rightSprite = new Sprite(frame);
+    rightSprite.scale.set(-1, 1);
+    rightSprite.x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
+    rightSprite.y = minY * BOARD_STEP + BOARD_START_Y - 4;
+    frameContainer.addChild(rightSprite);
+    const topSprite = new Sprite(frame);
+    topSprite.angle = 90;
+    topSprite.x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
+    topSprite.y = minY * BOARD_STEP + BOARD_START_Y - 4;
+    frameContainer.addChild(topSprite);
+  }
+  // right bottom frame
+  {
+    const rightSprite = new Sprite(frame);
+    rightSprite.scale.set(-1, -1);
+    rightSprite.x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
+    rightSprite.y = (maxY + 1) * BOARD_STEP + BOARD_START_Y - 4;
+    frameContainer.addChild(rightSprite);
+    const bottomSprite = new Sprite(frame);
+    bottomSprite.angle = 90;
+    bottomSprite.scale.set(-1, 1);
+    bottomSprite.x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
     bottomSprite.y = (maxY + 1) * BOARD_STEP + BOARD_START_Y - 4;
     frameContainer.addChild(bottomSprite);
   }
