@@ -10,6 +10,13 @@ import {
 } from './constants';
 import { Box } from './Box';
 
+/*
+  選択したブロックと、hoverしているブロックを囲むように枠を表示する
+  タイマーを設定する
+  リザルト画面を出す
+  タイトル画面を出す
+*/
+
 const calcBoardCoordinate = (clientX: number, clientY: number) => {
   const inputX = Math.floor((clientX - BOARD_START_X) / BOARD_STEP);
   const inputY = Math.floor((clientY - BOARD_START_Y) / BOARD_STEP);
