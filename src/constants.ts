@@ -1,10 +1,20 @@
 import { Assets } from 'pixi.js';
 
+export const BOARD = {
+  X: 17,
+  Y: 10,
+};
+
+export type Coordinate = {
+  x: number;
+  y: number;
+};
+
 export const WIDTH = 800;
 export const HEIGHT = 600;
 
-export const BOARD_STEP = 38;
-export const BOARD_START_X = 77;
+export const BOARD_STEP = 40;
+export const BOARD_START_X = 60;
 export const BOARD_START_Y = 60;
 
 export type GameState = 'title' | 'game' | 'result';

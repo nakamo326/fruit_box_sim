@@ -1,12 +1,13 @@
 import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
 import {
+  Coordinate,
   nums,
   GameState,
   BOARD_STEP,
   BOARD_START_X,
   BOARD_START_Y,
 } from './constants';
-import { Box, Coordinate } from './Box';
+import { Box } from './Box';
 
 const handleClick = (event: FederatedPointerEvent) => {
   console.log(event.clientX, event.clientY);

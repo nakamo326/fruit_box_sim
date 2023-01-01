@@ -1,12 +1,4 @@
-const BOARD = {
-  X: 17,
-  Y: 10,
-};
-
-export type Coordinate = {
-  x: number;
-  y: number;
-};
+import { BOARD, Coordinate } from './constants';
 
 export class Box {
   board: number[][];
