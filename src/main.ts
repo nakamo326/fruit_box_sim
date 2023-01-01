@@ -15,7 +15,11 @@ import {
   BOARD_START_Y,
 } from './constants';
 import { Box } from './Box';
+import { calcBoardCoordinate } from './utils';
 import { updateBlockFrame, resetBlockFrame } from './blockFrame';
+
+let lastClicked: Coordinate | null = null;
+let lastHovered: Coordinate | null = null;
 
 /*
   [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
@@ -25,26 +29,7 @@ import { updateBlockFrame, resetBlockFrame } from './blockFrame';
   タイトル画面を出す
 */
 
-const calcBoardCoordinate = (clientX: number, clientY: number) => {
-  const inputX = Math.floor((clientX - BOARD_START_X) / BOARD_STEP);
-  const inputY = Math.floor((clientY - BOARD_START_Y) / BOARD_STEP);
-  let x = inputX;
-  if (inputX >= BOARD.X) {
-    x = BOARD.X - 1;
-  } else if (inputX < 0) {
-    x = 0;
-  }
-  let y = inputY;
-  if (inputY >= BOARD.Y) {
-    y = BOARD.Y - 1;
-  } else if (inputY < 0) {
-    y = 0;
-  }
-  return { x, y };
-};
-
 const handleClick = (event: FederatedPointerEvent) => {
-  console.log(event.clientX, event.clientY);
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
@@ -122,9 +107,6 @@ const generateSprites = (
 const app = new Application();
 document.body.appendChild(app.view);
 
-// 初期配置に対応するSpriteの配列を作成
 const box = new Box();
 generateBackground(app);
 const Sprites = generateSprites(box.board, app);
-let lastClicked: Coordinate | null = null;
-let lastHovered: Coordinate | null = null;
