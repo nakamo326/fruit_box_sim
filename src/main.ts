@@ -1,10 +1,4 @@
-import {
-  Application,
-  Assets,
-  FederatedPointerEvent,
-  ICanvas,
-  Sprite,
-} from 'pixi.js';
+import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
 import {
   Coordinate,
   nums,
@@ -79,19 +73,6 @@ const generateSprites = (
 // init pixi app
 const app = new Application();
 document.body.appendChild(app.view);
-
-// TODO: ボード（フレーム込み）を一枚のtileSprite(とりあえずsprite)にする
-// イベントリスナーが一つでいいか確認する
-// const tex = await Assets.load('assets/cat.jpg');
-// const bg = new Sprite(tex);
-// bg.x = BOARD_START_X - 24;
-// bg.y = BOARD_START_Y - 24;
-// bg.width = 720;
-// bg.height = 440;
-// bg.interactive = true;
-// bg.on('pointerdown', handleClick);
-// app.stage.addChild(bg);
-// TODO: ブロックをαこみのpngにして隙間を消す
 
 // 初期配置に対応するSpriteの配列を作成
 const box = new Box();
