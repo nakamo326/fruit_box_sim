@@ -19,7 +19,7 @@ import { updateBlockFrame, resetBlockFrame } from './blockFrame';
 
 /*
   [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
-  ブロックがないところの判定を追加する
+  [x] ブロックがないところの判定を追加する
   タイマーを設定する
   リザルト画面を出す
   タイトル画面を出す
@@ -128,18 +128,3 @@ generateBackground(app);
 const Sprites = generateSprites(box.board, app);
 let lastClicked: Coordinate | null = null;
 let lastHovered: Coordinate | null = null;
-
-const main = () => {
-  // ゲームの流れ
-  // トップページ (+ config)
-  // ゲーム
-  // リザルト
-
-  // game loop
-  let state: GameState = 'title';
-  app.ticker.add((delta) => {
-    // updateBoard();
-  });
-};
-
-// main();
