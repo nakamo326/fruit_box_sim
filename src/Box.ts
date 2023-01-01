@@ -27,6 +27,9 @@ export class Box {
     if (!(points[0] && points[1])) {
       return false;
     }
+    console.log(
+      `(${points[0].x}, ${points[0].y}), (${points[1].x}, ${points[1].y})`
+    );
     // 座標が作る長方形の範囲を決定
     const minX = points[0].x < points[1].x ? points[0].x : points[1].x;
     const maxX = points[0].x > points[1].x ? points[0].x : points[1].x;

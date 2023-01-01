@@ -14,8 +14,8 @@ export const WIDTH = 800;
 export const HEIGHT = 600;
 
 export const BOARD_STEP = 40;
-export const BOARD_START_X = 60;
-export const BOARD_START_Y = 60;
+export const BOARD_START_X = 64;
+export const BOARD_START_Y = 64;
 
 export type GameState = 'title' | 'game' | 'result';
 

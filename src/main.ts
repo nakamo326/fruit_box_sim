@@ -1,18 +1,42 @@
-import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
+import {
+  Application,
+  Assets,
+  FederatedPointerEvent,
+  ICanvas,
+  Sprite,
+} from 'pixi.js';
 import {
   Coordinate,
   nums,
   GameState,
+  BOARD,
   BOARD_STEP,
   BOARD_START_X,
   BOARD_START_Y,
 } from './constants';
 import { Box } from './Box';
 
+const calcBoardCoordinate = (clientX: number, clientY: number) => {
+  const inputX = Math.floor((clientX - BOARD_START_X) / BOARD_STEP);
+  const inputY = Math.floor((clientY - BOARD_START_Y) / BOARD_STEP);
+  let x = inputX;
+  if (inputX >= BOARD.X) {
+    x = BOARD.X - 1;
+  } else if (inputX < 0) {
+    x = 0;
+  }
+  let y = inputY;
+  if (inputY >= BOARD.Y) {
+    y = BOARD.Y - 1;
+  } else if (inputY < 0) {
+    y = 0;
+  }
+  return { x, y };
+};
+
 const handleClick = (event: FederatedPointerEvent) => {
   console.log(event.clientX, event.clientY);
-  const x = Math.floor((event.clientX - BOARD_START_X) / BOARD_STEP);
-  const y = Math.floor((event.clientY - BOARD_START_Y) / BOARD_STEP);
+  const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     lastClicked = { x, y };
@@ -45,7 +69,6 @@ const generateSprites = (
       sprite.y = y * BOARD_STEP + BOARD_START_Y;
       app.stage.addChild(sprite);
       sprite.interactive = true;
-      // TODO: spriteの隙間がクリックできないのでstageにリスナー貼る
       sprite.on('pointerdown', handleClick);
       return sprite;
     });
@@ -56,6 +79,19 @@ const generateSprites = (
 // init pixi app
 const app = new Application();
 document.body.appendChild(app.view);
+
+// TODO: ボード（フレーム込み）を一枚のtileSprite(とりあえずsprite)にする
+// イベントリスナーが一つでいいか確認する
+// const tex = await Assets.load('assets/cat.jpg');
+// const bg = new Sprite(tex);
+// bg.x = BOARD_START_X - 24;
+// bg.y = BOARD_START_Y - 24;
+// bg.width = 720;
+// bg.height = 440;
+// bg.interactive = true;
+// bg.on('pointerdown', handleClick);
+// app.stage.addChild(bg);
+// TODO: ブロックをαこみのpngにして隙間を消す
 
 // 初期配置に対応するSpriteの配列を作成
 const box = new Box();
