@@ -1,10 +1,4 @@
-import {
-  Application,
-  Container,
-  FederatedPointerEvent,
-  ICanvas,
-  Sprite,
-} from 'pixi.js';
+import { Application, FederatedPointerEvent, ICanvas, Sprite } from 'pixi.js';
 import {
   Coordinate,
   nums,
@@ -13,9 +7,9 @@ import {
   BOARD_STEP,
   BOARD_START_X,
   BOARD_START_Y,
-  frame,
 } from './constants';
 import { Box } from './Box';
+import { updateBlockFrame, resetFrame } from './blockFrame';
 
 /*
   選択したブロックと、hoverしているブロックを囲むように枠を表示する
@@ -62,10 +56,8 @@ const handleClick = (event: FederatedPointerEvent) => {
     });
   }
   lastClicked = null;
-  frameContainer.destroy();
+  resetFrame();
 };
-
-let frameContainer = new Container();
 
 const handleOver = (event: FederatedPointerEvent) => {
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
@@ -73,32 +65,8 @@ const handleOver = (event: FederatedPointerEvent) => {
   if (!lastClicked) {
     return;
   }
-  // TODO: 直前まで表示されていたframeを消す
-  if (!frameContainer.destroyed) {
-    frameContainer.destroy();
-  }
-  frameContainer = new Container();
-  app.stage.addChild(frameContainer);
-
-  // TODO: lastClickedと今の座標を囲むように線を出す
-  const minX = x < lastClicked.x ? x : lastClicked.x;
-  const maxX = x > lastClicked.x ? x : lastClicked.x;
-  const minY = y < lastClicked.y ? y : lastClicked.y;
-  const maxY = y > lastClicked.y ? y : lastClicked.y;
-
-  // left top frame
-  {
-    const leftSprite = new Sprite(frame);
-    leftSprite.x = minX * BOARD_STEP + BOARD_START_X - 4;
-    leftSprite.y = minY * BOARD_STEP + BOARD_START_Y - 4;
-    frameContainer.addChild(leftSprite);
-    const topSprite = new Sprite(frame);
-    topSprite.angle = 270;
-    topSprite.scale.set(-1, 1);
-    topSprite.x = minX * BOARD_STEP + BOARD_START_X - 4;
-    topSprite.y = minY * BOARD_STEP + BOARD_START_Y - 4;
-    frameContainer.addChild(topSprite);
-  }
+  const newContainer = updateBlockFrame(lastClicked, { x, y });
+  app.stage.addChild(newContainer);
 };
 
 const generateSprites = (
