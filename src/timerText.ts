@@ -13,7 +13,7 @@ export const initTimerText = () => {
     fill: 0xffffff,
     align: 'right',
   });
-  timerText.x = 700;
+  timerText.x = 640;
   timerText.y = BOARD_START_Y + BOARD_STEP * BOARD.Y + 40;
   return timerText;
 };
