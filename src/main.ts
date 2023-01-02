@@ -119,7 +119,7 @@ app.stage.addChild(blockFrame.containerRef);
 const score = new Score();
 app.stage.addChild(score.textRef);
 
-const timer = new Timer(blockFrame.reset);
+const timer = new Timer(blockFrame.getResetter());
 app.stage.addChild(timer.textRef);
 
 // TODO: なんらかのクリックイベントで発火させる

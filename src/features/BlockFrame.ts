@@ -22,6 +22,12 @@ export class BlockFrame {
     this.frameContainer.visible = false;
   }
 
+  getResetter(me = this) {
+    return function () {
+      me.frameContainer.visible = false;
+    };
+  }
+
   update(first: Coordinate, second: Coordinate) {
     // firstとsecondを囲むように線を出す
     const minX = first.x < second.x ? first.x : second.x;
