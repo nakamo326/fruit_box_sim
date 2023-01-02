@@ -28,7 +28,7 @@ export class Timer {
   start() {
     const endTime = Date.now() + 120 * 1000;
 
-    this.currentTimer = setInterval(() => {
+    this.currentTimer = window.setInterval(() => {
       const now = Date.now();
       const rest = endTime - now;
       if (rest <= 0) {
