@@ -2,14 +2,14 @@ import { Text } from 'pixi.js';
 import { BOARD, BOARD_START_Y, BOARD_STEP } from './constants';
 
 export class Score {
-  private scoreText: Text;
+  private scoreText = new Text('0', {
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fill: 0xffffff,
+    align: 'right',
+  });
+
   constructor() {
-    this.scoreText = new Text('0', {
-      fontFamily: 'Arial',
-      fontSize: 24,
-      fill: 0xffffff,
-      align: 'right',
-    });
     this.scoreText.x = 200;
     this.scoreText.y = BOARD_START_Y + BOARD_STEP * BOARD.Y + 40;
   }
