@@ -30,11 +30,14 @@ let lastHovered: Coordinate | null = null;
 /*
   [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
   [x] ブロックがないところの判定を追加する
+  TODO: 消えたブロックを非表示にする
   [x] タイマーを設定する
   [x] 現在のスコアを表示する
   リザルト画面を出す
   タイトル画面を出す
 */
+
+// TODO: ファイルごとのグローバル変数をクラスに隠蔽する
 
 const handleClick = (event: FederatedPointerEvent) => {
   if (isEnd) {
