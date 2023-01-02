@@ -21,7 +21,7 @@ import {
   resetBlockFrame,
   initBlockFrame,
 } from './blockFrame';
-import { updateScoreText, initScoreText } from './scoreText';
+import { Score } from './Score';
 import { Timer } from './Timer';
 
 let lastClicked: Coordinate | null = null;
@@ -60,7 +60,7 @@ const handleClick = (event: FederatedPointerEvent) => {
         }
       });
     });
-    updateScoreText(box.score);
+    score.update(box.score);
   }
   lastClicked = null;
   resetBlockFrame();
@@ -123,7 +123,9 @@ const box = new Box();
 generateBackground(app);
 const Sprites = generateSprites(box.board, app);
 app.stage.addChild(initBlockFrame());
-app.stage.addChild(initScoreText());
+
+const score = new Score();
+app.stage.addChild(score.textRef);
 
 const timer = new Timer();
 app.stage.addChild(timer.textRef);
