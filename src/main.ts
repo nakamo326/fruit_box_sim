@@ -22,7 +22,7 @@ import {
   initBlockFrame,
 } from './blockFrame';
 import { updateScoreText, initScoreText } from './scoreText';
-import { initTimerText, setTimer } from './timerText';
+import { initTimerText, isEnd, setTimer } from './timerText';
 
 let lastClicked: Coordinate | null = null;
 let lastHovered: Coordinate | null = null;
@@ -37,6 +37,9 @@ let lastHovered: Coordinate | null = null;
 */
 
 const handleClick = (event: FederatedPointerEvent) => {
+  if (isEnd) {
+    return;
+  }
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
@@ -61,7 +64,7 @@ const handleClick = (event: FederatedPointerEvent) => {
 };
 
 const handleOver = (event: FederatedPointerEvent) => {
-  if (!lastClicked) {
+  if (isEnd || !lastClicked) {
     return;
   }
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);

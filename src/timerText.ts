@@ -1,7 +1,10 @@
+import { resetBlockFrame } from './blockFrame';
 import { Text } from 'pixi.js';
 import { BOARD, BOARD_START_Y, BOARD_STEP } from './constants';
 
 let timerText: Text | null = null;
+// TODO: gameStateを変更する方が良さそう
+export let isEnd = false;
 
 export const initTimerText = () => {
   timerText = new Text(`120`, {
@@ -23,6 +26,8 @@ export const setTimer = () => {
     const rest = endTime - now;
     if (rest <= 0) {
       clearInterval(timer);
+      isEnd = true;
+      resetBlockFrame();
       return;
     }
     if (timerText) {
