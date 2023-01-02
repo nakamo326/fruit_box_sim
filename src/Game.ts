@@ -78,19 +78,17 @@ export class Game {
         return;
       }
       const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
-      console.log(`(${x}, ${y})`);
       if (!me.lastClicked) {
         me.lastClicked = { x, y };
         me.blockFrame.update(me.lastClicked, { x, y });
         return;
       }
       const res = me.box.tryEraseRectangles([me.lastClicked, { x, y }]);
-      console.log(res);
       if (res) {
         me.box.board.forEach((line, y) => {
           line.forEach((num, x) => {
-            if (num === 0 && !me.blockSprites[y][x].destroyed) {
-              me.blockSprites[y][x].destroy();
+            if (num === 0) {
+              me.blockSprites[y][x].alpha = 0;
             }
           });
         });
@@ -107,7 +105,6 @@ export class Game {
         return;
       }
       const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
-      console.log(`(${x}, ${y})`);
       if (me.lastHovered && x === me.lastHovered.x && y === me.lastHovered.y) {
         return;
       }
