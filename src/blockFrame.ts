@@ -9,10 +9,15 @@ import {
 
 let frameContainer = new Container();
 
+// TODO: フレームを非表示にする関数
 export const resetBlockFrame = () => {
   frameContainer.destroy();
 };
 
+// TODO: フレームを作成し、非表示にする関数
+// export const initBlockFrame = () => {};
+
+// TODO: フレームの位置を変更する関数に変える
 export const updateBlockFrame = (
   first: Coordinate,
   second: Coordinate

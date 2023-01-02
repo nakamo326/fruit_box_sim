@@ -129,6 +129,7 @@ const setTimer = () => {
       clearInterval(timer);
       return;
     }
+    // TODO: 新しいTextを生成しない
     lastTimerText = new Text(`${Math.floor(rest / 1000)}`, {
       fontFamily: 'Arial',
       fontSize: 24,
