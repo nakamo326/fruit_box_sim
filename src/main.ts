@@ -1,3 +1,4 @@
+import { ResetButton } from './features/ResetButton';
 import {
   Application,
   FederatedPointerEvent,
@@ -29,7 +30,7 @@ let lastHovered: Coordinate | null = null;
   [x] タイマーを設定する
   [x] 現在のスコアを表示する
   タイトル画面を出す
-  リセットボタンを追加する
+  [x] リセットボタンを追加する
   リザルト画面を出す
 */
 
@@ -68,6 +69,21 @@ const handleOver = (event: FederatedPointerEvent) => {
   }
   lastHovered = { x, y };
   blockFrame.update(lastClicked, lastHovered);
+};
+
+const resetGame = () => {
+  blockFrame.reset();
+  box = new Box();
+  // destroy all sprites
+  Sprites.forEach((line) => {
+    line.forEach((sprite) => {
+      sprite.destroy();
+    });
+  });
+  Sprites = generateSprites(box.board, app);
+  score.update(0);
+  timer.reset();
+  timer.start();
 };
 
 const generateBackground = (app: Application<ICanvas>) => {
@@ -110,17 +126,20 @@ const generateSprites = (
 const app = new Application();
 document.body.appendChild(app.view);
 
-const box = new Box();
+let box = new Box();
 generateBackground(app);
-const Sprites = generateSprites(box.board, app);
+let Sprites = generateSprites(box.board, app);
 
 const blockFrame = new BlockFrame();
 const score = new Score();
 const timer = new Timer(blockFrame.getResetter());
+const resetButton = new ResetButton();
+resetButton.elementRef.on('pointerdown', resetGame);
 
 app.stage.addChild(blockFrame.containerRef);
 app.stage.addChild(score.textRef);
 app.stage.addChild(timer.textRef);
+app.stage.addChild(resetButton.elementRef);
 
 // TODO: なんらかのクリックイベントで発火させる
-timer.setTimer();
+timer.start();
