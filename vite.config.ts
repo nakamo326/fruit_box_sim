@@ -5,6 +5,5 @@ export default defineConfig({
   build: {
     target: 'esnext',
   },
-  base:
-    process.env.NODE_ENV === 'production' ? '/<GITHUB_REPOSITORY_NAME>/' : './',
+  base: process.env.NODE_ENV === 'production' ? '/fruit_box_sim/' : './',
 });
