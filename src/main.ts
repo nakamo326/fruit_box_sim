@@ -4,7 +4,6 @@ import {
   Graphics,
   ICanvas,
   Sprite,
-  Text,
 } from 'pixi.js';
 import {
   Coordinate,
