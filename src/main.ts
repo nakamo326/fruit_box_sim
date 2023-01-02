@@ -23,10 +23,10 @@ import {
   initBlockFrame,
 } from './blockFrame';
 import { updateScoreText, initScoreText } from './scoreText';
+import { initTimerText, setTimer } from './timerText';
 
 let lastClicked: Coordinate | null = null;
 let lastHovered: Coordinate | null = null;
-let lastTimerText: Text | null = null;
 
 /*
   [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
@@ -119,32 +119,7 @@ generateBackground(app);
 const Sprites = generateSprites(box.board, app);
 app.stage.addChild(initBlockFrame());
 app.stage.addChild(initScoreText());
-
-const setTimer = () => {
-  const endTime = Date.now() + 120 * 1000;
-
-  const timer = setInterval(() => {
-    const now = Date.now();
-    const rest = endTime - now;
-    if (lastTimerText && !lastTimerText.destroyed) {
-      lastTimerText.destroy();
-    }
-    if (rest <= 0) {
-      clearInterval(timer);
-      return;
-    }
-    // TODO: 新しいTextを生成しない
-    lastTimerText = new Text(`${Math.floor(rest / 1000)}`, {
-      fontFamily: 'Arial',
-      fontSize: 24,
-      fill: 0xffffff,
-      align: 'center',
-    });
-    lastTimerText.x = 700;
-    lastTimerText.y = BOARD_START_Y + BOARD_STEP * BOARD.Y + 40;
-    app.stage.addChild(lastTimerText);
-  }, 100);
-};
+app.stage.addChild(initTimerText());
 
 // TODO: なんらかのクリックイベントで発火させる
 setTimer();
