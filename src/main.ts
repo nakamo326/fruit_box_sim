@@ -22,15 +22,31 @@ import { updateBlockFrame, resetBlockFrame } from './blockFrame';
 let lastClicked: Coordinate | null = null;
 let lastHovered: Coordinate | null = null;
 let lastTimerText: Text | null = null;
+let scoreText: Text | null = null;
 
 /*
   [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
   [x] ブロックがないところの判定を追加する
   [x] タイマーを設定する
-  現在のスコアを表示する
+  [x] 現在のスコアを表示する
   リザルト画面を出す
   タイトル画面を出す
 */
+
+const updateScoreText = () => {
+  if (scoreText && !scoreText.destroyed) {
+    scoreText.destroy();
+  }
+  scoreText = new Text(`${box.score}`, {
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fill: 0xffffff,
+    align: 'center',
+  });
+  scoreText.x = 200;
+  scoreText.y = BOARD_START_Y + BOARD_STEP * BOARD.Y + 40;
+  app.stage.addChild(scoreText);
+};
 
 const handleClick = (event: FederatedPointerEvent) => {
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
@@ -51,6 +67,7 @@ const handleClick = (event: FederatedPointerEvent) => {
         }
       });
     });
+    updateScoreText();
   }
   lastClicked = null;
   resetBlockFrame();
@@ -141,3 +158,4 @@ const setTimer = () => {
 
 // TODO: なんらかのクリックイベントで発火させる
 setTimer();
+updateScoreText();
