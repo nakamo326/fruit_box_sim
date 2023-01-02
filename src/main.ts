@@ -17,7 +17,11 @@ import {
 } from './constants';
 import { Box } from './Box';
 import { calcBoardCoordinate } from './utils';
-import { updateBlockFrame, resetBlockFrame } from './blockFrame';
+import {
+  updateBlockFrame,
+  resetBlockFrame,
+  frameContainer,
+} from './blockFrame';
 import { updateScoreText, initScoreText } from './scoreText';
 
 let lastClicked: Coordinate | null = null;
@@ -38,8 +42,7 @@ const handleClick = (event: FederatedPointerEvent) => {
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     lastClicked = { x, y };
-    const newContainer = updateBlockFrame(lastClicked, { x, y });
-    app.stage.addChild(newContainer);
+    updateBlockFrame(lastClicked, { x, y });
     return;
   }
   const res = box.tryEraseRectangles([lastClicked, { x, y }]);
@@ -68,8 +71,7 @@ const handleOver = (event: FederatedPointerEvent) => {
     return;
   }
   lastHovered = { x, y };
-  const newContainer = updateBlockFrame(lastClicked, { x, y });
-  app.stage.addChild(newContainer);
+  updateBlockFrame(lastClicked, { x, y });
 };
 
 const generateBackground = (app: Application<ICanvas>) => {
@@ -145,3 +147,4 @@ const setTimer = () => {
 // TODO: なんらかのクリックイベントで発火させる
 setTimer();
 app.stage.addChild(initScoreText());
+app.stage.addChild(frameContainer);
