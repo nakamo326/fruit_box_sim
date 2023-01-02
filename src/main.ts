@@ -22,7 +22,7 @@ import {
   initBlockFrame,
 } from './blockFrame';
 import { updateScoreText, initScoreText } from './scoreText';
-import { initTimerText, isEnd, setTimer } from './timerText';
+import { Timer } from './Timer';
 
 let lastClicked: Coordinate | null = null;
 let lastHovered: Coordinate | null = null;
@@ -40,7 +40,7 @@ let lastHovered: Coordinate | null = null;
 // TODO: ファイルごとのグローバル変数をクラスに隠蔽する
 
 const handleClick = (event: FederatedPointerEvent) => {
-  if (isEnd) {
+  if (timer.isEnd) {
     return;
   }
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
@@ -67,7 +67,7 @@ const handleClick = (event: FederatedPointerEvent) => {
 };
 
 const handleOver = (event: FederatedPointerEvent) => {
-  if (isEnd || !lastClicked) {
+  if (timer.isEnd || !lastClicked) {
     return;
   }
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
@@ -124,7 +124,9 @@ generateBackground(app);
 const Sprites = generateSprites(box.board, app);
 app.stage.addChild(initBlockFrame());
 app.stage.addChild(initScoreText());
-app.stage.addChild(initTimerText());
+
+const timer = new Timer();
+app.stage.addChild(timer.textRef);
 
 // TODO: なんらかのクリックイベントで発火させる
-setTimer();
+timer.setTimer();
