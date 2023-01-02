@@ -14,11 +14,11 @@ import {
   BOARD_START_X,
   BOARD_START_Y,
 } from './constants';
-import { Box } from './Box';
 import { calcBoardCoordinate } from './utils';
-import { BlockFrame } from './BlockFrame';
-import { Score } from './Score';
-import { Timer } from './Timer';
+import { Box } from './features/Box';
+import { BlockFrame } from './features/BlockFrame';
+import { Score } from './features/Score';
+import { Timer } from './features/Timer';
 
 let lastClicked: Coordinate | null = null;
 let lastHovered: Coordinate | null = null;
@@ -26,14 +26,11 @@ let lastHovered: Coordinate | null = null;
 /*
   [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
   [x] ブロックがないところの判定を追加する
-  TODO: 消えたブロックを非表示にする
   [x] タイマーを設定する
   [x] 現在のスコアを表示する
   リザルト画面を出す
   タイトル画面を出す
 */
-
-// TODO: ファイルごとのグローバル変数をクラスに隠蔽する
 
 const handleClick = (event: FederatedPointerEvent) => {
   if (timer.isEnd) {
@@ -51,8 +48,8 @@ const handleClick = (event: FederatedPointerEvent) => {
   if (res) {
     box.board.forEach((line, y) => {
       line.forEach((num, x) => {
-        if (num === 0 && !Sprites[y][x].destroyed) {
-          Sprites[y][x].destroy();
+        if (num === 0) {
+          Sprites[y][x].alpha = 0;
         }
       });
     });

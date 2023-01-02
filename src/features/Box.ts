@@ -1,4 +1,4 @@
-import { BOARD, Coordinate } from './constants';
+import { BOARD, Coordinate } from '../constants';
 
 export class Box {
   board: number[][];

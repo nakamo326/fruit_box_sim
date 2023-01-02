@@ -5,7 +5,7 @@ import {
   BOARD_START_X,
   BOARD_START_Y,
   frame,
-} from './constants';
+} from '../constants';
 
 export class BlockFrame {
   private frameContainer = new Container();

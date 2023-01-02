@@ -1,5 +1,5 @@
 import { Text } from 'pixi.js';
-import { BOARD, BOARD_START_Y, BOARD_STEP } from './constants';
+import { BOARD, BOARD_START_Y, BOARD_STEP } from '../constants';
 
 export class Score {
   private scoreText = new Text('0', {
