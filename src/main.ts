@@ -37,14 +37,12 @@ const handleClick = (event: FederatedPointerEvent) => {
     return;
   }
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
-  console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     lastClicked = { x, y };
     blockFrame.update(lastClicked, { x, y });
     return;
   }
   const res = box.tryEraseRectangles([lastClicked, { x, y }]);
-  console.log(res);
   if (res) {
     box.board.forEach((line, y) => {
       line.forEach((num, x) => {
@@ -64,12 +62,11 @@ const handleOver = (event: FederatedPointerEvent) => {
     return;
   }
   const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
-  console.log(`(${x}, ${y})`);
   if (lastHovered && x === lastHovered.x && y === lastHovered.y) {
     return;
   }
   lastHovered = { x, y };
-  blockFrame.update(lastClicked, { x, y });
+  blockFrame.update(lastClicked, lastHovered);
 };
 
 const generateBackground = (app: Application<ICanvas>) => {
