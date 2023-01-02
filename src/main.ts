@@ -9,7 +9,6 @@ import {
 import {
   Coordinate,
   nums,
-  GameState,
   BOARD,
   BOARD_STEP,
   BOARD_START_X,
@@ -124,6 +123,7 @@ const generateSprites = (
 
 // init pixi app
 const app = new Application();
+// @ts-ignore
 document.body.appendChild(app.view);
 
 let box = new Box();
