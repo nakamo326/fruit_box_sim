@@ -24,8 +24,14 @@ export const nums = await Promise.all(
   Array(9)
     .fill(0)
     .map(async (_, i) => {
-      return await Assets.load(`assets/0${i + 1}.png`);
+      return await Assets.load(
+        process.env.NODE_ENV === 'production'
+          ? `assets/0${i + 1}.png`
+          : `0${i + 1}.png`
+      );
     })
 );
 
-export const frame = await Assets.load('assets/frame.png');
+export const frame = await Assets.load(
+  process.env.NODE_ENV === 'production' ? 'assets/frame.png' : 'frame.png'
+);
