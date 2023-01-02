@@ -28,8 +28,9 @@ let lastHovered: Coordinate | null = null;
   [x] ブロックがないところの判定を追加する
   [x] タイマーを設定する
   [x] 現在のスコアを表示する
-  リザルト画面を出す
   タイトル画面を出す
+  リセットボタンを追加する
+  リザルト画面を出す
 */
 
 const handleClick = (event: FederatedPointerEvent) => {
@@ -114,12 +115,11 @@ generateBackground(app);
 const Sprites = generateSprites(box.board, app);
 
 const blockFrame = new BlockFrame();
-app.stage.addChild(blockFrame.containerRef);
-
 const score = new Score();
-app.stage.addChild(score.textRef);
-
 const timer = new Timer(blockFrame.getResetter());
+
+app.stage.addChild(blockFrame.containerRef);
+app.stage.addChild(score.textRef);
 app.stage.addChild(timer.textRef);
 
 // TODO: なんらかのクリックイベントで発火させる
