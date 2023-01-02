@@ -16,11 +16,7 @@ import {
 } from './constants';
 import { Box } from './Box';
 import { calcBoardCoordinate } from './utils';
-import {
-  updateBlockFrame,
-  resetBlockFrame,
-  initBlockFrame,
-} from './blockFrame';
+import { BlockFrame } from './BlockFrame';
 import { Score } from './Score';
 import { Timer } from './Timer';
 
@@ -47,7 +43,7 @@ const handleClick = (event: FederatedPointerEvent) => {
   console.log(`(${x}, ${y})`);
   if (!lastClicked) {
     lastClicked = { x, y };
-    updateBlockFrame(lastClicked, { x, y });
+    blockFrame.update(lastClicked, { x, y });
     return;
   }
   const res = box.tryEraseRectangles([lastClicked, { x, y }]);
@@ -63,7 +59,7 @@ const handleClick = (event: FederatedPointerEvent) => {
     score.update(box.score);
   }
   lastClicked = null;
-  resetBlockFrame();
+  blockFrame.reset();
 };
 
 const handleOver = (event: FederatedPointerEvent) => {
@@ -76,7 +72,7 @@ const handleOver = (event: FederatedPointerEvent) => {
     return;
   }
   lastHovered = { x, y };
-  updateBlockFrame(lastClicked, { x, y });
+  blockFrame.update(lastClicked, { x, y });
 };
 
 const generateBackground = (app: Application<ICanvas>) => {
@@ -122,12 +118,14 @@ document.body.appendChild(app.view);
 const box = new Box();
 generateBackground(app);
 const Sprites = generateSprites(box.board, app);
-app.stage.addChild(initBlockFrame());
+
+const blockFrame = new BlockFrame();
+app.stage.addChild(blockFrame.containerRef);
 
 const score = new Score();
 app.stage.addChild(score.textRef);
 
-const timer = new Timer();
+const timer = new Timer(blockFrame.reset);
 app.stage.addChild(timer.textRef);
 
 // TODO: なんらかのクリックイベントで発火させる

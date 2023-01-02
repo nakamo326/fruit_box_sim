@@ -7,67 +7,51 @@ import {
   frame,
 } from './constants';
 
-let frameContainer: Container | null = null;
+export class BlockFrame {
+  private frameContainer = new Container();
 
-// フレームを作成し、非表示にする関数
-export const initBlockFrame = (): Container => {
-  frameContainer = new Container();
-  frameContainer.visible = false;
-  for (let i = 0; i < 8; i++) {
-    const sprite = new Sprite(frame);
-    frameContainer.addChild(sprite);
+  constructor() {
+    this.frameContainer.visible = false;
+    for (let i = 0; i < 8; i++) {
+      const sprite = new Sprite(frame);
+      this.frameContainer.addChild(sprite);
+    }
   }
-  return frameContainer;
-};
 
-// フレームを非表示にする関数
-export const resetBlockFrame = () => {
-  if (frameContainer) {
-    frameContainer.visible = false;
+  reset() {
+    this.frameContainer.visible = false;
   }
-};
 
-// フレームの位置を変更し、表示する関数
-export const updateBlockFrame = (first: Coordinate, second: Coordinate) => {
-  if (!frameContainer) {
-    return;
-  }
-  // firstとsecondを囲むように線を出す
-  const minX = first.x < second.x ? first.x : second.x;
-  const maxX = first.x > second.x ? first.x : second.x;
-  const minY = first.y < second.y ? first.y : second.y;
-  const maxY = first.y > second.y ? first.y : second.y;
+  update(first: Coordinate, second: Coordinate) {
+    // firstとsecondを囲むように線を出す
+    const minX = first.x < second.x ? first.x : second.x;
+    const maxX = first.x > second.x ? first.x : second.x;
+    const minY = first.y < second.y ? first.y : second.y;
+    const maxY = first.y > second.y ? first.y : second.y;
 
-  const corner = frameContainer.children;
-  // left top frame
-  {
+    const corner = this.frameContainer.children;
+    // left top frame
     corner[0].x = minX * BOARD_STEP + BOARD_START_X - 4;
     corner[0].y = minY * BOARD_STEP + BOARD_START_Y - 4;
     corner[1].angle = 270;
     corner[1].scale.set(-1, 1);
     corner[1].x = minX * BOARD_STEP + BOARD_START_X - 4;
     corner[1].y = minY * BOARD_STEP + BOARD_START_Y - 4;
-  }
-  // left bottom frame
-  {
+    // left bottom frame
     corner[2].scale.set(1, -1);
     corner[2].x = minX * BOARD_STEP + BOARD_START_X - 4;
     corner[2].y = (maxY + 1) * BOARD_STEP + BOARD_START_Y - 4;
     corner[3].angle = 270;
     corner[3].x = minX * BOARD_STEP + BOARD_START_X - 4;
     corner[3].y = (maxY + 1) * BOARD_STEP + BOARD_START_Y - 4;
-  }
-  // right top frame
-  {
+    // right top frame
     corner[4].scale.set(-1, 1);
     corner[4].x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
     corner[4].y = minY * BOARD_STEP + BOARD_START_Y - 4;
     corner[5].angle = 90;
     corner[5].x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
     corner[5].y = minY * BOARD_STEP + BOARD_START_Y - 4;
-  }
-  // right bottom frame
-  {
+    // right bottom frame
     corner[6].scale.set(-1, -1);
     corner[6].x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
     corner[6].y = (maxY + 1) * BOARD_STEP + BOARD_START_Y - 4;
@@ -75,6 +59,11 @@ export const updateBlockFrame = (first: Coordinate, second: Coordinate) => {
     corner[7].scale.set(-1, 1);
     corner[7].x = (maxX + 1) * BOARD_STEP + BOARD_START_X - 4;
     corner[7].y = (maxY + 1) * BOARD_STEP + BOARD_START_Y - 4;
+
+    this.frameContainer.visible = true;
   }
-  frameContainer.visible = true;
-};
+
+  public get containerRef(): Container {
+    return this.frameContainer;
+  }
+}
