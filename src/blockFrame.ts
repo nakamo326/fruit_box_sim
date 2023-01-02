@@ -7,9 +7,11 @@ import {
   frame,
 } from './constants';
 
+let frameContainer: Container | null = null;
+
 // フレームを作成し、非表示にする関数
-const initBlockFrame = (): Container => {
-  const frameContainer = new Container();
+export const initBlockFrame = (): Container => {
+  frameContainer = new Container();
   frameContainer.visible = false;
   for (let i = 0; i < 8; i++) {
     const sprite = new Sprite(frame);
@@ -18,23 +20,25 @@ const initBlockFrame = (): Container => {
   return frameContainer;
 };
 
-export const frameContainer = initBlockFrame();
-
 // フレームを非表示にする関数
 export const resetBlockFrame = () => {
-  frameContainer.visible = false;
+  if (frameContainer) {
+    frameContainer.visible = false;
+  }
 };
 
-// フレームの位置を変更する関数に変える
+// フレームの位置を変更し、表示する関数
 export const updateBlockFrame = (first: Coordinate, second: Coordinate) => {
-  // lastClickedと今の座標を囲むように線を出す
+  if (!frameContainer) {
+    return;
+  }
+  // firstとsecondを囲むように線を出す
   const minX = first.x < second.x ? first.x : second.x;
   const maxX = first.x > second.x ? first.x : second.x;
   const minY = first.y < second.y ? first.y : second.y;
   const maxY = first.y > second.y ? first.y : second.y;
 
   const corner = frameContainer.children;
-  console.log(corner);
   // left top frame
   {
     corner[0].x = minX * BOARD_STEP + BOARD_START_X - 4;

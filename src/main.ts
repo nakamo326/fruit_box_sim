@@ -20,7 +20,7 @@ import { calcBoardCoordinate } from './utils';
 import {
   updateBlockFrame,
   resetBlockFrame,
-  frameContainer,
+  initBlockFrame,
 } from './blockFrame';
 import { updateScoreText, initScoreText } from './scoreText';
 
@@ -117,6 +117,8 @@ document.body.appendChild(app.view);
 const box = new Box();
 generateBackground(app);
 const Sprites = generateSprites(box.board, app);
+app.stage.addChild(initBlockFrame());
+app.stage.addChild(initScoreText());
 
 const setTimer = () => {
   const endTime = Date.now() + 120 * 1000;
@@ -146,5 +148,3 @@ const setTimer = () => {
 
 // TODO: なんらかのクリックイベントで発火させる
 setTimer();
-app.stage.addChild(initScoreText());
-app.stage.addChild(frameContainer);
