@@ -19,6 +19,7 @@ export class Timer {
   }
 
   reset() {
+    this.isEnd = false;
     this.timerText.text = '120';
     if (this.currentTimer) {
       clearInterval(this.currentTimer);
