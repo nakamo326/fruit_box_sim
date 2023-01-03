@@ -23,14 +23,16 @@ import { Timer } from './features/Timer';
 let lastClicked: Coordinate | null = null;
 let lastHovered: Coordinate | null = null;
 
-/*
+/* TODO:
   [x] 選択したブロックと、hoverしているブロックを囲むように枠を表示する
   [x] ブロックがないところの判定を追加する
   [x] タイマーを設定する
   [x] 現在のスコアを表示する
-  タイトル画面を出す
   [x] リセットボタンを追加する
-  リザルト画面を出す
+  [] タイトル画面を出す
+  [] リザルト画面を出す
+  [] 操作音を追加する
+  [] デザインの修正
 */
 
 const handleClick = (event: FederatedPointerEvent) => {
