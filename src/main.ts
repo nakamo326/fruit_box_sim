@@ -80,8 +80,13 @@ const resetGame = () => {
     });
   });
   Sprites = generateSprites(box.board, app);
-  score.update(0);
+  score.reset();
   timer.reset();
+
+  startGame();
+};
+
+const startGame = () => {
   timer.start();
 };
 
@@ -142,4 +147,4 @@ app.stage.addChild(timer.textRef);
 app.stage.addChild(resetButton.elementRef);
 
 // TODO: なんらかのクリックイベントで発火させる
-timer.start();
+startGame();

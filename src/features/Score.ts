@@ -14,6 +14,10 @@ export class Score {
     this.scoreText.y = BOARD_START_Y + BOARD_STEP * BOARD.Y + 40;
   }
 
+  reset() {
+    this.update(0);
+  }
+
   update(newScore: number) {
     this.scoreText.text = `${newScore}`;
   }
