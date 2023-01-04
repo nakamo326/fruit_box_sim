@@ -21,7 +21,7 @@ export class Game {
   timer = new Timer(this.blockFrame.getResetter());
   resetButton = new ResetButton();
 
-  constructor(private readonly app: Application<ICanvas>) {
+  constructor(app: Application<ICanvas>) {
     this.backGround.elementRef.on('pointerdown', this.handleClick(this));
     this.backGround.elementRef.on('pointerover', this.handleOver(this));
     this.backGround.elementRef.on('pointermove', this.handleOver(this));
