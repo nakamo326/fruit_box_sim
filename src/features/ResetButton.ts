@@ -3,7 +3,7 @@ import { Container, Graphics, Text } from 'pixi.js';
 import { BOARD_START_Y, BOARD_STEP } from '../constants';
 
 export class ResetButton {
-  elements = new Container();
+  private elements = new Container();
 
   constructor() {
     const button = new Graphics();
