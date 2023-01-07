@@ -5,5 +5,5 @@ export default defineConfig({
   build: {
     target: 'esnext',
   },
-  base: process.env.NODE_ENV === 'production' ? '/fruit_box_sim/' : '/fruit_box_sim/',
+  base: process.env.NODE_ENV === 'production' ? '/fruit_box_sim/' : './',
 });
