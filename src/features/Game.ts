@@ -102,6 +102,8 @@ export class Game {
 
       me.score.reset();
       me.timer.reset();
+      me.lastClicked = null;
+      me.lastHovered = null;
 
       me.timer.start();
     };
