@@ -5,20 +5,31 @@ export class Box {
   score: number;
 
   constructor() {
-    this.board = this.generateBoard();
+    this.board = this.generateRamdomBoard();
     this.score = 0;
     console.log(this.board);
   }
 
-  private generateBoard() {
-    const newBoard = Array(BOARD.Y)
-      .fill(0)
-      .map(() =>
-        Array(BOARD.X)
-          .fill(0)
-          .map(() => Math.floor(Math.random() * 9) + 1)
-      );
-    return newBoard;
+  private generateRamdomBoard() {
+    while (true) {
+      const newBoard = Array(BOARD.Y)
+        .fill(0)
+        .map(() =>
+          Array(BOARD.X)
+            .fill(0)
+            .map(() => Math.floor(Math.random() * 9) + 1)
+        );
+      const sum =
+        newBoard.reduce((acc, val) => acc + val.reduce((a, b) => a + b), 0) -
+        newBoard[BOARD.Y - 1][BOARD.X - 1];
+      const num = 10 - (sum % 10);
+      if (num == 10) {
+        // もう一度盤面を作り直し
+        continue;
+      }
+      newBoard[BOARD.Y - 1][BOARD.X - 1] = num;
+      return newBoard;
+    }
   }
 
   // 長方形の対角になる点を受け取り、長方形内のブロックの消去を試みる。
