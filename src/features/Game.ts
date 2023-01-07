@@ -23,7 +23,8 @@ export class Game {
   timer = new Timer(this.blockFrame.getResetter());
   resetButton = new ResetButton();
   volume = new VolumeButton(560, BOARD_START_Y + BOARD_STEP * BOARD.Y + 80);
-  audio = new AudioManager();
+  success = new AudioManager('/success.mp3');
+  fail = new AudioManager('/fail.mp3');
 
   constructor(app: Application<ICanvas>) {
     this.backGround.elementRef.on('pointerdown', this.handleClick(this));
@@ -58,7 +59,7 @@ export class Game {
       }
       const res = me.box.tryEraseRectangles([me.lastClicked, { x, y }]);
       if (res) {
-        me.audio.play('success', this.volume.getVolume);
+        me.success.play(this.volume.getVolume);
         me.box.board.forEach((line, y) => {
           line.forEach((num, x) => {
             if (num === 0) {
@@ -68,7 +69,7 @@ export class Game {
         });
         me.score.update(me.box.score);
       } else {
-        me.audio.play('fail', this.volume.getVolume);
+        me.fail.play(this.volume.getVolume);
       }
       me.lastClicked = null;
       me.blockFrame.reset();

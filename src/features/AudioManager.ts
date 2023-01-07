@@ -1,16 +1,12 @@
 export class AudioManager {
-  private src = new Map<string, HTMLAudioElement>();
-  constructor() {
-    this.src.set('success', new Audio('/success.mp3'));
-    this.src.set('fail', new Audio('/fail.mp3'));
+  private src: HTMLAudioElement;
+  constructor(path: string) {
+    this.src = new Audio(path);
   }
 
-  play(key: string, volume: number) {
-    const val = this.src.get(key);
-    if (val) {
-      val.volume = volume;
-      val.load();
-      val.play();
-    }
+  play(volume: number) {
+    this.src.volume = volume;
+    this.src.load();
+    this.src.play();
   }
 }
