@@ -10,8 +10,6 @@ import { Score } from './Score';
 import { Timer } from './Timer';
 import { VolumeButton } from './VolumeButton';
 import { AudioManager } from './AudioManager';
-import successSrc from './success.mp3';
-import failSrc from './fail.mp3';
 
 export class Game {
   lastClicked: Coordinate | null = null;
@@ -25,8 +23,8 @@ export class Game {
   timer = new Timer(this.blockFrame.getResetter());
   resetButton = new ResetButton();
   volume = new VolumeButton(560, BOARD_START_Y + BOARD_STEP * BOARD.Y + 80);
-  success = new AudioManager(successSrc);
-  fail = new AudioManager(failSrc);
+  success = new AudioManager('success.mp3');
+  fail = new AudioManager('fail.mp3');
 
   constructor(app: Application<ICanvas>) {
     this.backGround.elementRef.on('pointerdown', this.handleClick(this));
