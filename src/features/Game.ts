@@ -1,5 +1,5 @@
 import { Application, FederatedPointerEvent, ICanvas } from 'pixi.js';
-import { Coordinate } from '../constants';
+import { BOARD, BOARD_START_Y, BOARD_STEP, Coordinate } from '../constants';
 import { calcBoardCoordinate } from '../utils';
 import { Box } from './Box';
 import { BackGround } from './BackGround';
@@ -8,6 +8,7 @@ import { BlockFrame } from './BlockFrame';
 import { ResetButton } from './ResetButton';
 import { Score } from './Score';
 import { Timer } from './Timer';
+import { VolumeButton } from './VolumeButton';
 
 export class Game {
   lastClicked: Coordinate | null = null;
@@ -20,6 +21,7 @@ export class Game {
   score = new Score();
   timer = new Timer(this.blockFrame.getResetter());
   resetButton = new ResetButton();
+  volumeBar = new VolumeButton(560, BOARD_START_Y + BOARD_STEP * BOARD.Y + 80);
 
   constructor(app: Application<ICanvas>) {
     this.backGround.elementRef.on('pointerdown', this.handleClick(this));
@@ -38,6 +40,7 @@ export class Game {
     app.stage.addChild(this.score.textRef);
     app.stage.addChild(this.timer.textRef);
     app.stage.addChild(this.resetButton.elementRef);
+    app.stage.addChild(this.volumeBar.elementRef);
   }
 
   handleClick(me: Game) {
