@@ -9,6 +9,7 @@ import { ResetButton } from './ResetButton';
 import { Score } from './Score';
 import { Timer } from './Timer';
 import { VolumeButton } from './VolumeButton';
+import { AudioManager } from './AudioManager';
 
 export class Game {
   lastClicked: Coordinate | null = null;
@@ -21,7 +22,8 @@ export class Game {
   score = new Score();
   timer = new Timer(this.blockFrame.getResetter());
   resetButton = new ResetButton();
-  volumeBar = new VolumeButton(560, BOARD_START_Y + BOARD_STEP * BOARD.Y + 80);
+  volume = new VolumeButton(560, BOARD_START_Y + BOARD_STEP * BOARD.Y + 80);
+  audio = new AudioManager();
 
   constructor(app: Application<ICanvas>) {
     this.backGround.elementRef.on('pointerdown', this.handleClick(this));
@@ -40,7 +42,7 @@ export class Game {
     app.stage.addChild(this.score.textRef);
     app.stage.addChild(this.timer.textRef);
     app.stage.addChild(this.resetButton.elementRef);
-    app.stage.addChild(this.volumeBar.elementRef);
+    app.stage.addChild(this.volume.elementRef);
   }
 
   handleClick(me: Game) {
@@ -56,6 +58,7 @@ export class Game {
       }
       const res = me.box.tryEraseRectangles([me.lastClicked, { x, y }]);
       if (res) {
+        me.audio.play('success', this.volume.getVolume);
         me.box.board.forEach((line, y) => {
           line.forEach((num, x) => {
             if (num === 0) {
@@ -64,6 +67,8 @@ export class Game {
           });
         });
         me.score.update(me.box.score);
+      } else {
+        me.audio.play('fail', this.volume.getVolume);
       }
       me.lastClicked = null;
       me.blockFrame.reset();
