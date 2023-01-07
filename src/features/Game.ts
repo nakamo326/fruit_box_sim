@@ -23,8 +23,8 @@ export class Game {
   timer = new Timer(this.blockFrame.getResetter());
   resetButton = new ResetButton();
   volume = new VolumeButton(560, BOARD_START_Y + BOARD_STEP * BOARD.Y + 80);
-  success = new AudioManager('success.mp3');
-  fail = new AudioManager('fail.mp3');
+  success = new AudioManager('./success.mp3');
+  fail = new AudioManager('./fail.mp3');
 
   constructor(app: Application<ICanvas>) {
     this.backGround.elementRef.on('pointerdown', this.handleClick(this));
