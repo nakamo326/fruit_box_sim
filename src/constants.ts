@@ -29,3 +29,6 @@ export const nums = await Promise.all(
 );
 
 export const frame = await Assets.load('frame.png');
+
+export const volumeUp = await Assets.load('volumeUp.png');
+export const volumeDown = await Assets.load('volumeDown.png');

@@ -1,31 +1,22 @@
-import { Container, Graphics, Text } from 'pixi.js';
+import { Container, Sprite, Text } from 'pixi.js';
+import { ColorReplaceFilter } from '@pixi/filter-color-replace';
+import { volumeDown, volumeUp } from '../constants';
 
 export class VolumeButton {
   private elements = new Container();
-  private downButton = new Container();
-  private upButton = new Container();
   private text: Text;
   private volume = 5;
 
   constructor(xStart: number, yStart: number) {
-    const leftButton = new Graphics();
-    leftButton.lineStyle(2, 0xffffff, 1);
-    leftButton.beginFill(0x000000);
-    leftButton.drawRect(xStart, yStart + 2, 24, 24);
-    leftButton.endFill();
-    this.downButton.addChild(leftButton);
-    const leftButtonText = new Text('<', {
-      fontFamily: 'Arial',
-      fontSize: 20,
-      fill: 0xffffff,
-      align: 'center',
-    });
-    leftButtonText.x = xStart + 6;
-    leftButtonText.y = yStart + 2;
-    this.downButton.addChild(leftButtonText);
+    const filter = new ColorReplaceFilter(0x000000, 0xffffff);
 
-    this.downButton.interactive = true;
-    this.downButton.on('pointerdown', this.handleDown(this));
+    const downIcon = new Sprite(volumeDown);
+    downIcon.filters = [filter];
+    downIcon.x = xStart;
+    downIcon.y = yStart;
+
+    downIcon.interactive = true;
+    downIcon.on('pointerdown', this.handleDown(this));
 
     this.text = new Text('0.5', {
       fontFamily: 'Arial',
@@ -34,30 +25,18 @@ export class VolumeButton {
       align: 'right',
     });
     this.text.x = xStart + 40;
-    this.text.y = yStart + 2;
+    this.text.y = yStart + 4;
 
-    const rightButton = new Graphics();
-    rightButton.lineStyle(2, 0xffffff, 1);
-    rightButton.beginFill(0x000000);
-    rightButton.drawRect(xStart + 80, yStart + 2, 24, 24);
-    rightButton.endFill();
-    this.upButton.addChild(rightButton);
+    const upIcon = new Sprite(volumeUp);
+    upIcon.filters = [filter];
+    upIcon.x = xStart + 80;
+    upIcon.y = yStart;
 
-    const rightButtonText = new Text('>', {
-      fontFamily: 'Arial',
-      fontSize: 20,
-      fill: 0xffffff,
-      align: 'center',
-    });
-    rightButtonText.x = xStart + 80 + 6;
-    rightButtonText.y = yStart + 2;
-    this.upButton.addChild(rightButtonText);
+    upIcon.interactive = true;
+    upIcon.on('pointerdown', this.handleUp(this));
 
-    this.upButton.interactive = true;
-    this.upButton.on('pointerdown', this.handleUp(this));
-
-    this.elements.addChild(this.downButton);
-    this.elements.addChild(this.upButton);
+    this.elements.addChild(downIcon);
+    this.elements.addChild(upIcon);
     this.elements.addChild(this.text);
   }
 

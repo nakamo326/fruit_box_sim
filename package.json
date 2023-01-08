@@ -19,6 +19,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
+    "@pixi/filter-color-replace": "^5.0.0",
     "pixi.js": "^7.0.5"
   }
 }
