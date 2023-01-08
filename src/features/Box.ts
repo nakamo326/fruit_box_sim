@@ -2,10 +2,18 @@ import { BOARD, Coordinate } from '../constants';
 
 export class Box {
   board: number[][];
+  isDropped: boolean[][];
   score: number;
 
   constructor() {
     this.board = this.generateRamdomBoard();
+    this.isDropped = Array(BOARD.Y)
+      .fill(0)
+      .map(() =>
+        Array(BOARD.X)
+          .fill(0)
+          .map(() => false)
+      );
     this.score = 0;
     console.log(this.board);
   }
@@ -38,9 +46,6 @@ export class Box {
     if (!(points[0] && points[1])) {
       return false;
     }
-    console.log(
-      `(${points[0].x}, ${points[0].y}), (${points[1].x}, ${points[1].y})`
-    );
     // 座標が作る長方形の範囲を決定
     const minX = points[0].x < points[1].x ? points[0].x : points[1].x;
     const maxX = points[0].x > points[1].x ? points[0].x : points[1].x;
@@ -51,18 +56,18 @@ export class Box {
     let count = 0;
     for (let y = minY; y <= maxY; y++) {
       for (let x = minX; x <= maxX; x++) {
-        if (this.board[y][x] !== 0) {
+        if (!this.isDropped[y][x]) {
           numOfBlock++;
           count += this.board[y][x];
         }
       }
     }
     if (count !== 10) return false;
-    // Boardから長方形内のnumを0にする
+    // Boardから長方形内の座標にisDroppedのフラグを立てる
     for (let y = minY; y <= maxY; y++) {
       for (let x = minX; x <= maxX; x++) {
-        if (this.board[y][x] !== 0) {
-          this.board[y][x] = 0;
+        if (!this.isDropped[y][x]) {
+          this.isDropped[y][x] = true;
         }
       }
     }

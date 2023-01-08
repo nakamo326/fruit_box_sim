@@ -61,9 +61,9 @@ export class Game {
       const res = me.box.tryEraseRectangles([me.lastClicked, { x, y }]);
       if (res) {
         me.success.play(this.volume.getVolume);
-        me.box.board.forEach((line, y) => {
-          line.forEach((num, x) => {
-            if (num === 0) {
+        me.box.isDropped.forEach((line, y) => {
+          line.forEach((isDropped, x) => {
+            if (isDropped) {
               me.blocks.spriteArr[y][x].alpha = 0;
             }
           });
