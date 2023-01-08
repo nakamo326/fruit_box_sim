@@ -144,7 +144,11 @@ export class Game {
   handleDrawHistory(event: FederatedPointerEvent) {
     const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
     // 最後にホバーしたhistoryの描画を取り消す
-    if (this.lastHistory) {
+    if (
+      this.lastHistory &&
+      this.lastHovered &&
+      (this.lastHovered.x !== x || this.lastHovered.y !== y)
+    ) {
       this.lastHistory.forEach(({ x, y }) => {
         this.blocks.spriteArr[y][x].alpha = 0.3;
       });
@@ -175,5 +179,6 @@ export class Game {
     this.blockFrame.update({ x: minX, y: minY }, { x: maxX, y: maxY });
 
     this.lastHistory = hist;
+    this.lastHovered = { x, y };
   }
 }
