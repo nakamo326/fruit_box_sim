@@ -20,7 +20,7 @@ export class Game {
   box = new Box();
   blocks = new Blocks(this.box.board);
   backGround = new BackGround();
-  blockFrame = new BlockFrame();
+  blockFrame = new BlockFrame(0xff0000);
   score = new Score();
   timer = new Timer(this.blockFrame.getResetter());
   resetButton = new ResetButton();

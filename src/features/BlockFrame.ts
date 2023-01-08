@@ -1,3 +1,4 @@
+import { ColorReplaceFilter } from '@pixi/filter-color-replace';
 import { Container, Sprite } from 'pixi.js';
 import {
   BOARD_STEP,
@@ -10,10 +11,12 @@ import {
 export class BlockFrame {
   private frameContainer = new Container();
 
-  constructor() {
+  constructor(color: number) {
+    const filter = new ColorReplaceFilter(0xffffff, color);
     this.frameContainer.visible = false;
     for (let i = 0; i < 8; i++) {
       const sprite = new Sprite(frame);
+      sprite.filters = [filter];
       this.frameContainer.addChild(sprite);
     }
   }
