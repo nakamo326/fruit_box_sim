@@ -51,7 +51,8 @@ export class Game {
       if (me.timer.isEnd) {
         return;
       }
-      const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
+      console.log(event.screenX, event.screenY);
+      const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
       if (!me.lastClicked) {
         me.lastClicked = { x, y };
         me.blockFrame.update(me.lastClicked, { x, y });
@@ -81,7 +82,7 @@ export class Game {
       if (me.timer.isEnd || !me.lastClicked) {
         return;
       }
-      const { x, y } = calcBoardCoordinate(event.clientX, event.clientY);
+      const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
       if (me.lastHovered && x === me.lastHovered.x && y === me.lastHovered.y) {
         return;
       }

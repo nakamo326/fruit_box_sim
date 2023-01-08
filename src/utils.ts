@@ -1,8 +1,8 @@
 import { BOARD, BOARD_START_X, BOARD_START_Y, BOARD_STEP } from './constants';
 
-export const calcBoardCoordinate = (clientX: number, clientY: number) => {
-  const inputX = Math.floor((clientX - BOARD_START_X) / BOARD_STEP);
-  const inputY = Math.floor((clientY - BOARD_START_Y) / BOARD_STEP);
+export const calcBoardCoordinate = (screenX: number, screenY: number) => {
+  const inputX = Math.floor((screenX - BOARD_START_X) / BOARD_STEP);
+  const inputY = Math.floor((screenY - BOARD_START_Y) / BOARD_STEP);
   let x = inputX;
   if (inputX >= BOARD.X) {
     x = BOARD.X - 1;
