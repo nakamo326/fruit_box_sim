@@ -69,7 +69,7 @@ export class Game {
           });
         });
         me.score.update(me.box.score);
-      } else {
+      } else if (me.lastClicked.x !== x || me.lastClicked.y !== y) {
         me.fail.play(this.volume.getVolume);
       }
       me.lastClicked = null;
