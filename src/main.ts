@@ -19,8 +19,12 @@ import { Game } from './features/Game';
 const main = () => {
   // init pixi app
   const app = new Application();
-  // @ts-ignore
-  document.body.appendChild(app.view);
+
+  const gameDiv = document.getElementById('game');
+  if (gameDiv) {
+    // @ts-ignore
+    gameDiv.appendChild(app.view);
+  }
 
   const game = new Game(app);
 
