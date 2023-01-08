@@ -4,6 +4,7 @@ export class Box {
   board: number[][];
   isDropped: boolean[][];
   score: number;
+  history: Coordinate[][] = [];
 
   constructor() {
     this.board = this.generateRamdomBoard();
@@ -54,11 +55,13 @@ export class Box {
 
     let numOfBlock = 0;
     let count = 0;
+    const targets: Coordinate[] = [];
     for (let y = minY; y <= maxY; y++) {
       for (let x = minX; x <= maxX; x++) {
         if (!this.isDropped[y][x]) {
           numOfBlock++;
           count += this.board[y][x];
+          targets.push({ x, y });
         }
       }
     }
@@ -71,6 +74,7 @@ export class Box {
         }
       }
     }
+    this.history.push(targets);
     this.score += numOfBlock;
     return true;
   }
