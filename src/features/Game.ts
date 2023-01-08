@@ -14,6 +14,7 @@ import { AudioManager } from './AudioManager';
 export class Game {
   lastClicked: Coordinate | null = null;
   lastHovered: Coordinate | null = null;
+  private isEndChecker: number | null = null;
 
   box = new Box();
   blocks = new Blocks(this.box.board);
@@ -104,10 +105,28 @@ export class Game {
     this.lastClicked = null;
     this.lastHovered = null;
 
-    this.timer.start();
+    this.start();
   }
 
   start() {
     this.timer.start();
+
+    // timer.isEndからリザルトの描画をフックする
+    this.isEndChecker = window.setInterval(() => {
+      if (!this.timer.isEnd) {
+        return;
+      }
+      if (this.isEndChecker) {
+        clearInterval(this.isEndChecker);
+      }
+      this.box.isDropped.forEach((line, y) => {
+        line.forEach((isDropped, x) => {
+          if (isDropped) {
+            this.blocks.spriteArr[y][x].alpha = 0.3;
+          }
+        });
+      });
+      // TODO: history表示のevent hook
+    }, 100);
   }
 }
