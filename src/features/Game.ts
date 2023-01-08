@@ -126,6 +126,7 @@ export class Game {
   }
 
   handleResetGame() {
+    this.lastHistory = null;
     this.blockFrame.reset();
     this.box = new Box();
     this.blocks.regenerate(this.box.board);
@@ -159,10 +160,19 @@ export class Game {
       return hasHovered;
     });
     // histに含まれる座標のブロックを明るくする
+    // TODO: histの中から囲む範囲を決定
+    let minX = BOARD.X;
+    let maxX = -1;
+    let minY = BOARD.Y;
+    let maxY = -1;
     hist.forEach(({ x, y }) => {
       this.blocks.spriteArr[y][x].alpha = 1;
+      minX = x < minX ? x : minX;
+      maxX = x > maxX ? x : maxX;
+      minY = y < minY ? y : minY;
+      maxY = y > maxY ? y : maxY;
     });
-    this.blockFrame.update(hist[0], hist[hist.length - 1]);
+    this.blockFrame.update({ x: minX, y: minY }, { x: maxX, y: maxY });
 
     this.lastHistory = hist;
   }
