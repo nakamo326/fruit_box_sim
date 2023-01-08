@@ -8,8 +8,8 @@ import { Game } from './features/Game';
   [x] 現在のスコアを表示する
   [x] リセットボタンを追加する
   [x] 操作音を追加する
-  [] CIにNODE_ENVを追加する
-  [] vite.config追加する
+  [x] CIにNODE_ENVを追加する
+  [x] vite.config追加する
   [] 盤面の生成アルゴリズムを修正
   [] タイトル画面を出す
   [] リザルト画面を出す
