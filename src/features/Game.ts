@@ -27,14 +27,14 @@ export class Game {
   fail = new AudioManager('./fail.mp3');
 
   constructor(app: Application<ICanvas>) {
-    this.backGround.elementRef.on('pointerdown', this.handleClick(this));
-    this.backGround.elementRef.on('pointerover', this.handleOver(this));
-    this.backGround.elementRef.on('pointermove', this.handleOver(this));
-    this.resetButton.elementRef.on('pointerdown', this.handleResetGame(this));
+    this.backGround.elementRef.on('pointerdown', this.handleClick, this);
+    this.backGround.elementRef.on('pointerover', this.handleOver, this);
+    this.backGround.elementRef.on('pointermove', this.handleOver, this);
+    this.resetButton.elementRef.on('pointerdown', this.handleResetGame, this);
 
     this.blocks.elementRef.children.forEach((sprite) => {
-      sprite.on('pointerdown', this.handleClick(this));
-      sprite.on('pointerover', this.handleOver(this));
+      sprite.on('pointerdown', this.handleClick, this);
+      sprite.on('pointerover', this.handleOver, this);
     });
 
     app.stage.addChild(this.backGround.elementRef);
@@ -46,68 +46,65 @@ export class Game {
     app.stage.addChild(this.volume.elementRef);
   }
 
-  handleClick(me: Game) {
-    return (event: FederatedPointerEvent) => {
-      if (me.timer.isEnd) {
-        return;
-      }
-      console.log(event.screenX, event.screenY);
-      const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
-      if (!me.lastClicked) {
-        me.lastClicked = { x, y };
-        me.blockFrame.update(me.lastClicked, { x, y });
-        return;
-      }
-      const res = me.box.tryEraseRectangles([me.lastClicked, { x, y }]);
-      if (res) {
-        me.success.play(this.volume.getVolume);
-        me.box.isDropped.forEach((line, y) => {
-          line.forEach((isDropped, x) => {
-            if (isDropped) {
-              me.blocks.spriteArr[y][x].alpha = 0;
-            }
-          });
+  handleClick(event: FederatedPointerEvent) {
+    if (this.timer.isEnd) {
+      return;
+    }
+    const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
+    if (!this.lastClicked) {
+      this.lastClicked = { x, y };
+      this.blockFrame.update(this.lastClicked, { x, y });
+      return;
+    }
+    const res = this.box.tryEraseRectangles([this.lastClicked, { x, y }]);
+    if (res) {
+      this.success.play(this.volume.getVolume);
+      this.box.isDropped.forEach((line, y) => {
+        line.forEach((isDropped, x) => {
+          if (isDropped) {
+            this.blocks.spriteArr[y][x].alpha = 0;
+          }
         });
-        me.score.update(me.box.score);
-      } else if (me.lastClicked.x !== x || me.lastClicked.y !== y) {
-        me.fail.play(this.volume.getVolume);
-      }
-      me.lastClicked = null;
-      me.blockFrame.reset();
-    };
-  }
-
-  handleOver(me: Game) {
-    return (event: FederatedPointerEvent) => {
-      if (me.timer.isEnd || !me.lastClicked) {
-        return;
-      }
-      const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
-      if (me.lastHovered && x === me.lastHovered.x && y === me.lastHovered.y) {
-        return;
-      }
-      me.lastHovered = { x, y };
-      me.blockFrame.update(me.lastClicked, me.lastHovered);
-    };
-  }
-
-  handleResetGame(me: Game) {
-    return () => {
-      me.blockFrame.reset();
-      me.box = new Box();
-      me.blocks.regenerate(me.box.board);
-      this.blocks.elementRef.children.forEach((sprite) => {
-        sprite.on('pointerdown', this.handleClick(this));
-        sprite.on('pointerover', this.handleOver(this));
       });
+      this.score.update(this.box.score);
+    } else if (this.lastClicked.x !== x || this.lastClicked.y !== y) {
+      this.fail.play(this.volume.getVolume);
+    }
+    this.lastClicked = null;
+    this.blockFrame.reset();
+  }
 
-      me.score.reset();
-      me.timer.reset();
-      me.lastClicked = null;
-      me.lastHovered = null;
+  handleOver(event: FederatedPointerEvent) {
+    if (this.timer.isEnd || !this.lastClicked) {
+      return;
+    }
+    const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
+    if (
+      this.lastHovered &&
+      x === this.lastHovered.x &&
+      y === this.lastHovered.y
+    ) {
+      return;
+    }
+    this.lastHovered = { x, y };
+    this.blockFrame.update(this.lastClicked, this.lastHovered);
+  }
 
-      me.timer.start();
-    };
+  handleResetGame() {
+    this.blockFrame.reset();
+    this.box = new Box();
+    this.blocks.regenerate(this.box.board);
+    this.blocks.elementRef.children.forEach((sprite) => {
+      sprite.on('pointerdown', this.handleClick, this);
+      sprite.on('pointerover', this.handleOver, this);
+    });
+
+    this.score.reset();
+    this.timer.reset();
+    this.lastClicked = null;
+    this.lastHovered = null;
+
+    this.timer.start();
   }
 
   start() {

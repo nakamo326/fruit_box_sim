@@ -16,7 +16,7 @@ export class VolumeButton {
     downIcon.y = yStart;
 
     downIcon.interactive = true;
-    downIcon.on('pointerdown', this.handleDown(this));
+    downIcon.on('pointerdown', this.handleDown, this);
 
     this.text = new Text('0.5', {
       fontFamily: 'Arial',
@@ -33,7 +33,7 @@ export class VolumeButton {
     upIcon.y = yStart;
 
     upIcon.interactive = true;
-    upIcon.on('pointerdown', this.handleUp(this));
+    upIcon.on('pointerdown', this.handleUp, this);
 
     this.elements.addChild(downIcon);
     this.elements.addChild(upIcon);
@@ -48,23 +48,17 @@ export class VolumeButton {
     return this.volume * 0.1;
   }
 
-  handleDown(me: VolumeButton) {
-    return () => {
-      if (me.volume > 0) {
-        me.volume -= 1;
-        me.text.text = `${me.getVolume.toFixed(1)}`;
-        console.log(me.volume);
-      }
-    };
+  handleDown() {
+    if (this.volume > 0) {
+      this.volume -= 1;
+      this.text.text = `${this.getVolume.toFixed(1)}`;
+    }
   }
 
-  handleUp(me: VolumeButton) {
-    return () => {
-      if (me.volume < 10) {
-        me.volume += 1;
-        me.text.text = `${me.getVolume.toFixed(1)}`;
-        console.log(me.volume);
-      }
-    };
+  handleUp() {
+    if (this.volume < 10) {
+      this.volume += 1;
+      this.text.text = `${this.getVolume.toFixed(1)}`;
+    }
   }
 }
