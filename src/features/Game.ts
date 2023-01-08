@@ -47,6 +47,28 @@ export class Game {
     app.stage.addChild(this.volume.elementRef);
   }
 
+  start() {
+    this.timer.start();
+
+    // timer.isEndからリザルトの描画をフックする
+    this.isEndChecker = window.setInterval(() => {
+      if (!this.timer.isEnd) {
+        return;
+      }
+      if (this.isEndChecker) {
+        clearInterval(this.isEndChecker);
+      }
+      this.box.isDropped.forEach((line, y) => {
+        line.forEach((isDropped, x) => {
+          if (isDropped) {
+            this.blocks.spriteArr[y][x].alpha = 0.3;
+          }
+        });
+      });
+      // TODO: history表示のevent hook
+    }, 100);
+  }
+
   handleClick(event: FederatedPointerEvent) {
     if (this.timer.isEnd) {
       return;
@@ -106,27 +128,5 @@ export class Game {
     this.lastHovered = null;
 
     this.start();
-  }
-
-  start() {
-    this.timer.start();
-
-    // timer.isEndからリザルトの描画をフックする
-    this.isEndChecker = window.setInterval(() => {
-      if (!this.timer.isEnd) {
-        return;
-      }
-      if (this.isEndChecker) {
-        clearInterval(this.isEndChecker);
-      }
-      this.box.isDropped.forEach((line, y) => {
-        line.forEach((isDropped, x) => {
-          if (isDropped) {
-            this.blocks.spriteArr[y][x].alpha = 0.3;
-          }
-        });
-      });
-      // TODO: history表示のevent hook
-    }, 100);
   }
 }
