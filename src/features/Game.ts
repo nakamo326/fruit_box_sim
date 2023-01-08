@@ -14,6 +14,7 @@ import { AudioManager } from './AudioManager';
 export class Game {
   lastClicked: Coordinate | null = null;
   lastHovered: Coordinate | null = null;
+  lastHistory: Coordinate[] | null = null;
   private isEndChecker: number | null = null;
 
   box = new Box();
@@ -50,23 +51,34 @@ export class Game {
   start() {
     this.timer.start();
 
-    // timer.isEndからリザルトの描画をフックする
-    this.isEndChecker = window.setInterval(() => {
-      if (!this.timer.isEnd) {
-        return;
-      }
-      if (this.isEndChecker) {
-        clearInterval(this.isEndChecker);
-      }
-      this.box.isDropped.forEach((line, y) => {
-        line.forEach((isDropped, x) => {
-          if (isDropped) {
-            this.blocks.spriteArr[y][x].alpha = 0.3;
-          }
-        });
+    // リザルトの描画をフックする
+    this.isEndChecker = window.setInterval(this.drawResult.bind(this), 100);
+  }
+
+  drawResult() {
+    if (!this.timer.isEnd) {
+      return;
+    }
+    if (this.isEndChecker) {
+      clearInterval(this.isEndChecker);
+    }
+    this.lastClicked = null;
+    this.lastHovered = null;
+    this.box.isDropped.forEach((line, y) => {
+      line.forEach((isDropped, x) => {
+        if (isDropped) {
+          this.blocks.spriteArr[y][x].alpha = 0.3;
+          // 既存のeventを削除
+          this.blocks.spriteArr[y][x].removeAllListeners();
+          // TODO: history表示のevent hook
+          this.blocks.spriteArr[y][x].on(
+            'pointerover',
+            this.handleDrawHistory,
+            this
+          );
+        }
       });
-      // TODO: history表示のevent hook
-    }, 100);
+    });
   }
 
   handleClick(event: FederatedPointerEvent) {
@@ -124,9 +136,34 @@ export class Game {
 
     this.score.reset();
     this.timer.reset();
-    this.lastClicked = null;
-    this.lastHovered = null;
 
     this.start();
+  }
+
+  handleDrawHistory(event: FederatedPointerEvent) {
+    const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
+    // 最後にホバーしたhistoryの描画を取り消す
+    if (this.lastHistory) {
+      this.lastHistory.forEach(({ x, y }) => {
+        this.blocks.spriteArr[y][x].alpha = 0.3;
+      });
+    }
+    // histroyから{x,y}を含む要素を探す
+    const [hist] = this.box.history.filter((hist) => {
+      let hasHovered = false;
+      hist.forEach((coor) => {
+        if (coor.x === x && coor.y === y) {
+          hasHovered = true;
+        }
+      });
+      return hasHovered;
+    });
+    // histに含まれる座標のブロックを明るくする
+    hist.forEach(({ x, y }) => {
+      this.blocks.spriteArr[y][x].alpha = 1;
+    });
+    this.blockFrame.update(hist[0], hist[hist.length - 1]);
+
+    this.lastHistory = hist;
   }
 }
