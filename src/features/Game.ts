@@ -144,7 +144,7 @@ export class Game {
   handleDrawHistory(event: FederatedPointerEvent) {
     const { x, y } = calcBoardCoordinate(event.screenX, event.screenY);
     // 最後にホバーしたhistoryの描画を取り消す
-    // test comment
+    console.log(this.lastHistory, this.lastHovered, { x, y });
     if (
       this.lastHistory &&
       this.lastHovered &&
