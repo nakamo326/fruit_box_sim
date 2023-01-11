@@ -126,6 +126,7 @@ export class Game {
   }
 
   handleResetGame() {
+    this.lastHovered = null;
     this.lastHistory = null;
     this.blockFrame.reset();
     this.box = new Box();
